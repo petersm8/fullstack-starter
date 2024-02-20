@@ -6,7 +6,7 @@ This project will assist you in building the critical skills necessary to comple
 . Now you should be in your users forked repo. To verify this you should see `your.username/fullstack-starter` in the top left/url.
 . Clone your forked repository to your environment via git+ssh:
 
-    git clone git@github.com:<your_username_here>/fullstack-starter.git
+    git clone git@github.com:petersm8/fullstack-starter.git
 
 == Setup
 === Required software
