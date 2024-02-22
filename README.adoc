@@ -9,6 +9,21 @@ This project will assist you in building the critical skills necessary to comple
     git clone git@github.com:petersm8/fullstack-starter.git
 
 == Setup
+
+Install java 11
+
+Install gradle https://gradle.org/releases/ (8.6)
+
+Insstall nodejs https://nodejs.org/en/download 
+
+add to env variables path
+
+Install Mongodb https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/ (Also install compass for the GUI)
+
+remove BROWSER = NONE from ui/package.json
+
+import in mongodb compass database start and 2 collection inventory and product (import from sample_data)
+
 === Required software
 As this project is a "fullstack" application, you'll need software to run both the backend (server side) and frontend (client side) frameworks.
 
