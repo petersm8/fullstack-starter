@@ -39,6 +39,7 @@ public class InventoryControllerTest {
     this.inventory = new Inventory();
     this.inventory.setId("1");
     this.inventory.setName("Item 1");
+    this.inventoryDAO = new InventoryDAO(this.mongoTemplate);
     this.mongoTemplate.save(this.inventory);
   }
 
