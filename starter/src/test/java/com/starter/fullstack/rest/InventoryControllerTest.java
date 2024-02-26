@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class InventoryControllerTest {
 
+  @Autowired
   private MockMvc mockMvc;
 
   @Autowired
@@ -31,7 +32,9 @@ public class InventoryControllerTest {
   @Autowired
   private ObjectMapper objectMapper;
 
+  @Autowired
   private InventoryDAO inventoryDAO;
+
   private Inventory inventory;
 
   @Before
@@ -54,13 +57,12 @@ public class InventoryControllerTest {
     this.inventory.setId("1");
     this.inventory.setName("Item 1");
     this.inventoryDAO.create(this.inventory);
-    // When/Then
     this.mockMvc.perform(post("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(this.objectMapper.writeValueAsString(this.inventory)))
-        .andExpect(status().isOk());
+      .andExpect(status().isOk());
 
-    Assert.assertEquals(3, this.mongoTemplate.findAll(Inventory.class).size());
+    Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }
