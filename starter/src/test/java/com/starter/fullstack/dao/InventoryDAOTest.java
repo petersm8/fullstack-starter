@@ -52,4 +52,14 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+
+  @Test
+  public void insert() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    Inventory inventory1 = this.inventoryDAO.create(inventory);
+    inventory.setId(null);
+    Assert.assertEquals(inventory, inventory1);
+  }
 }
