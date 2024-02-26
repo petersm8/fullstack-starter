@@ -2,20 +2,25 @@ package com.starter.fullstack.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starter.fullstack.api.Inventory;
-import com.starter.fullstack.api.Product;
 import com.starter.fullstack.dao.InventoryDAO;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@SpringBootTest
+@AutoConfigureMockMvc
+@RunWith(SpringRunner.class)
 public class InventoryControllerTest {
 
   private MockMvc mockMvc;
@@ -47,7 +52,7 @@ public class InventoryControllerTest {
     this.inventory = new Inventory();
     this.inventory.setId("1");
     this.inventory.setName("Item 1");
-    this.inventoryDAO.create(inventory);
+    this.inventoryDAO.create(this.inventory);
     // When/Then
     this.mockMvc.perform(post("/inventory")
         .accept(MediaType.APPLICATION_JSON)
