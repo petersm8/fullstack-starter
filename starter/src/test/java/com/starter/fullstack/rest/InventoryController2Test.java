@@ -65,7 +65,8 @@ public class InventoryController2Test {
         .contentType(MediaType.APPLICATION_JSON)
         .content(this.objectMapper.writeValueAsString(this.inventory)))
       .andExpect(status().isOk());
-
+    // fails with assertion error line 67
+    
     Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }
