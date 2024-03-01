@@ -1,7 +1,7 @@
 package com.starter.fullstack.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starter.fullstack.api.Inventory;
-import com.starter.fullstack.dao.InventoryDAO;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -19,11 +23,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class InventoryControllerTest {
 
   @Autowired
+  private MockMvc mockMvc;
+
+  @Autowired
+  private ObjectMapper objectMapper;
+  
+  @Autowired
   private MongoTemplate mongoTemplate;
-
-  private InventoryDAO inventoryDAO;
-
-  private InventoryController inventoryController;
 
   private Inventory inventory;
 
@@ -32,9 +38,7 @@ public class InventoryControllerTest {
     this.inventory = new Inventory();
     this.inventory.setId("ID");
     this.inventory.setName("TEST");
-    this.inventoryDAO = new InventoryDAO(this.mongoTemplate);
     this.inventory = this.mongoTemplate.save(this.inventory);
-    this.inventoryController = new InventoryController(this.inventoryDAO);
   }
 
   @After
@@ -47,7 +51,13 @@ public class InventoryControllerTest {
     this.inventory = new Inventory();
     this.inventory.setId("OTHER ID");
     this.inventory.setName("ALSO TEST");
-    this.inventoryController.create(this.inventory);
+    this.inventory.setProductType("TEST");
+    this.mockMvc.perform(post("/inventory")
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(this.objectMapper.writeValueAsString(this.inventory)))
+      .andExpect(status().isOk());
+    // fails with assertion error line 58
 
     Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
   }

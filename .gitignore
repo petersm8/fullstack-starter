@@ -447,3 +447,4 @@ gradle-app.setting
 yarn.lock
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,intellij,gradle,maven,java,node,visualstudiocode,eclipse,yarn
+.vscode/settings.json
