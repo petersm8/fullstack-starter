@@ -57,8 +57,28 @@ public class InventoryControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(this.objectMapper.writeValueAsString(this.inventory)))
       .andExpect(status().isOk());
-    // fails with assertion error line 58
 
+    Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
+  }
+
+  @Test
+  public void deleteTest() throws Throwable {
+    this.inventory = new Inventory();
+    this.inventory.setId("OTHER ID");
+    this.inventory.setName("ALSO TEST");
+    this.inventory.setProductType("TEST");
+    this.mockMvc.perform(post("/inventory")
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(this.objectMapper.writeValueAsString(this.inventory)))
+      .andExpect(status().isOk());
+      
+    this.mockMvc.perform(delete("/inventory")
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("[\"" + this.inventory.getId() + "\"]"))
+      .andExpect(status().isOk());
+    
     Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }
