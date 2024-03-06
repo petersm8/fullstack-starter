@@ -38,6 +38,7 @@ public class InventoryControllerTest {
     this.inventory = new Inventory();
     this.inventory.setId("ID");
     this.inventory.setName("TEST");
+    this.inventory.setProductType("TEST");
     this.inventory = this.mongoTemplate.save(this.inventory);
   }
 
@@ -52,6 +53,7 @@ public class InventoryControllerTest {
     this.inventory.setId("OTHER ID");
     this.inventory.setName("ALSO TEST");
     this.inventory.setProductType("TEST");
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
     this.mockMvc.perform(post("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -67,18 +69,16 @@ public class InventoryControllerTest {
     this.inventory.setId("OTHER ID");
     this.inventory.setName("ALSO TEST");
     this.inventory.setProductType("TEST");
-    this.mockMvc.perform(post("/inventory")
-        .accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(this.objectMapper.writeValueAsString(this.inventory)))
-      .andExpect(status().isOk());
-      
+    this.inventory = this.mongoTemplate.save(this.inventory);
+
+    Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
     this.mockMvc.perform(delete("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
-        .content("[\"" + this.inventory.getId() + "\"]"))
+        .content(this.inventory.getId()))
       .andExpect(status().isOk());
     
-    Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
   }
+
 }
